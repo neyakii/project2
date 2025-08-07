@@ -78,7 +78,7 @@
 <body>
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">Classmeet</a>
+            <a class="navbar-brand" href="/dashboard">Classmeet</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
