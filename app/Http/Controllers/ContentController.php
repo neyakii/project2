@@ -47,11 +47,12 @@ class ContentController extends Controller
         return redirect()->route('contents.index')->with('success', 'Konten berhasil ditambahkan.');
     }
 
-    public function edit(Content $content)
+   public function edit(Content $content)
     {
         $categories = Category::all();
         return view('content.edit', compact('content', 'categories'));
     }
+
 
     public function update(Request $request, Content $content)
     {
