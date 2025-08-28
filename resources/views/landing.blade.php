@@ -55,7 +55,7 @@
     }
 
     .badge-custom {
-        background-color: #ff4d6d;
+        background-color: #7b2cbf;
         color: white;
         font-size: 0.75rem;
         border-radius: 10px;
@@ -75,22 +75,51 @@
     <p>Tunjukkan semangat, kreativitas, dan kebersamaan kalian di event tahunan yang paling dinanti!</p>
 </div>
 
+<div class="container mb-4">
+    <form action="{{ route('landing') }}" method="GET" class="d-flex">
+        <input type="text" name="search" class="form-control me-2" 
+               placeholder="Cari konten..." value="{{ request('search') }}">
+        <button class="btn btn-danger" type="submit">Search</button>
+    </form>
+</div>
+
+
 <div class="container pb-5">
     <div class="row">
         @forelse($contents as $content)
-        <div class="col-md-4 mb-4">
-            <div class="card card-custom h-100 shadow-sm">
-                @if($content->image)
-                <img src="{{ asset('storage/' . $content->image) }}" class="card-img-top" style="height: 220px; object-fit: cover;" alt="{{ $content->title }}">
-                @endif
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <div>
-                        <h5 class="card-title fw-bold">{{ $content->title }}</h5>
-                        <p class="card-text text-muted">{{ Str::limit($content->body, 100) }}</p>
-                        <span class="badge badge-custom">{{ $content->category->name }}</span>
+        <div class="col-12 mb-4"> <!-- full width, satu per baris -->
+            <div class="card card-custom shadow-sm">
+                <div class="row g-0">
+                    @if($content->image)
+                    <div class="col-md-4">
+                        <img src="{{ asset('storage/' . $content->image) }}" 
+                             class="img-fluid rounded-start" 
+                             style="height: 100%; object-fit: cover;" 
+                             alt="{{ $content->title }}">
                     </div>
-                    <div class="mt-3">
-                        <a href="{{ route('contents.show', $content->id) }}" class="btn btn-outline-primary btn-view w-100">Lihat Detail</a>
+                    @endif
+                    <div class="col-md-8">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <div>
+                                <h4 class="card-title fw-bold">{{ $content->title }}</h4>
+                                <p class="card-text text-muted">
+                                    {{ Str::limit($content->body, 300) }}
+                                </p>
+                                <p class="text-muted mb-1" style="font-size: 0.85rem;">
+                                    Dibuat pada: {{ $content->created_at->format('d M Y') }}
+                                </p>
+                                <p class="text-muted mb-1" style="font-size: 0.85rem;">
+                                    Oleh: {{ $content->user->name }}
+                                </p>
+                                <span class="badge badge-custom">{{ $content->category->name }}</span>
+                            </div>
+                            <div class="mt-3">
+                                <a href="{{ route('contents.show', $content->id) }}" 
+                                   class="btn btn-outline-primary btn-view">
+                                   Lihat Selengkapnya
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,6 +129,11 @@
             <p>📭 Belum ada konten yang ditambahkan. Yuk mulai buat kenangan!</p>
         </div>
         @endforelse
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ $contents->withQueryString()->links('pagination::bootstrap-5') }}
     </div>
 </div>
 @endsection

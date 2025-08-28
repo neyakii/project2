@@ -29,11 +29,21 @@ class AuthController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            }
+
+            if ($user->hasRole('user')) {
+                return redirect()->route('user.dashboard');
+            }
+
+            return redirect()->route('landing'); // fallback kalau gak ada role
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'email' => 'Email atau password salah.',
         ])->withInput();
     }
 
@@ -46,9 +56,9 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name'                  => 'required|string|max:255',
-            'email'                 => 'required|email|unique:users',
-            'password'              => 'required|min:6|confirmed',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users',
+            'password' => 'required|min:6|confirmed',
         ]);
 
         $user = User::create([
@@ -57,8 +67,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // kasih role default user
+        $user->assignRole('user');
+
         Auth::login($user);
-        return redirect('/dashboard');
+
+        return redirect()->route('user.dashboard');
     }
 
     /* ---------- LOGOUT ---------- */
@@ -68,8 +82,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('landing');
     }
 }
-
-

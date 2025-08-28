@@ -13,12 +13,18 @@ class Content extends Model
         'title',
         'body',
         'category_id',
-        'image'
+        'image',
+        'user_id'
     ];
 
     // ✅ Relasi ke kategori
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -17,10 +17,13 @@
     }
 
     .card-text {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        color: #333;
+    font-size: 1.05rem;
+    line-height: 1.4;   /* lebih rapat daripada 1.6 */
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 0.6rem; /* biar spasi antar paragraf ga terlalu jauh */
     }
+
 
     .btn-secondary {
         background-color: #ffafcc;
@@ -64,7 +67,13 @@
         <div class="card-body">
             <h2 class="card-title">{{ $content->title }}</h2>
             <p class="text-muted mb-2">Kategori: <span class="badge bg-info">{{ $content->category->name }}</span></p>
-            <p class="card-text">{{ $content->body }}</p>
+            <p class="text-muted mb-1" style="font-size: 0.85rem;">
+                Dibuat pada: {{ $content->created_at->format('d M Y') }}
+            </p>
+             <p class="text-muted mb-1" style="font-size: 0.85rem;">
+                Oleh: {{ $content->user->name }}
+            </p>
+            <p class="card-text" style="white-space: pre-line;">{{ $content->body }}</p>
         </div>
     </div>
 </div>

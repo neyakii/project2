@@ -23,7 +23,7 @@
 
         .navbar-brand {
             font-weight: 800;
-            color: #9900b8ff !important;
+            color: #7b2cbf !important;
             font-size: 1.7rem;
             letter-spacing: 0.5px;
         }
@@ -36,7 +36,7 @@
         }
 
         .nav-link:hover {
-            color: #f94dffff !important;
+            color: #b700bdff !important;
             transform: scale(1.05);
         }
 
@@ -78,7 +78,20 @@
 <body>
     <nav class="navbar navbar-expand-lg shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/dashboard">Classmeet</a>
+            <a class="navbar-brand" 
+                href="
+                @auth
+                    @if(auth()->user()->hasRole('admin'))
+                        {{ route('admin.dashboard') }}
+                    @else
+                        {{ route('user.dashboard') }}
+                    @endif
+                @else
+                    {{ route('landing') }}
+                @endauth
+                ">
+                Classmeet
+                </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

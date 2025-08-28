@@ -38,6 +38,26 @@
         color: #fff;
     }
 
+    .btn-custom-secondary {
+        background-color: #c77dff;
+        color: #fff;
+    }
+
+    .btn-custom-secondary:hover {
+        background-color: #7b2cbf;
+        color: #fff;
+    }
+
+    .btn-custom-warning {
+        background-color: #ffafcc;
+        color: #6a097d;
+    }
+
+    .btn-custom-warning:hover {
+        background-color: #f48fb1;
+        color: #fff;
+    }
+
     .btn-custom-danger {
         background-color: #ff6b6b;
         color: #fff;
@@ -64,27 +84,32 @@
     }
 </style>
 
-<h2>Data Kategori</h2>
-<div class="d-flex gap-2 mb-3">
-    <a href="{{ url()->previous() }}" class="btn btn-custom">← Kembali</a>
-    <a href="{{ route('categories.create') }}" class="btn btn-custom btn-custom-primary">+ Tambah Kategori</a>
+<div class="container py-5">
+    <h2>Daftar User</h2>
+
+    <div class="mb-3 d-flex gap-2">
+        <a href="{{ route('admin.dashboard') }}" class="btn btn-custom-secondary">⬅ Kembali</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($users as $index => $user)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->roles->pluck('name')->join(', ') }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
-<table class="table table-bordered table-striped">
-    <thead><tr><th>No</th><th>Nama</th><th>Aksi</th></tr></thead>
-    <tbody>
-        @foreach($categories as $index => $category)
-        <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $category->name }}</td>
-            <td>
-                <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-custom">✏ Edit</a>
-                <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-sm btn-custom btn-custom-danger" onclick="return confirm('Yakin hapus?')">🗑 Hapus</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
 @endsection
